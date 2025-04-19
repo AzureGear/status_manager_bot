@@ -2,11 +2,11 @@ import logging
 from pathlib import Path
 from datetime import datetime
 from warnings import filterwarnings
-from az_teacher_data_handler import TeacherDataHandler
-from utils import get_important_info, write_info
-from rate_limiter import RateLimiter
-from config import BASE_DIR, DATA_DIR, API_BOT_TOKEN
-from ui_text import ui_data as UI_TEXT
+from status_control_bot.az_teacher_data_handler import TeacherDataHandler
+from status_control_bot.utils import get_important_info, write_info
+from status_control_bot.rate_limiter import RateLimiter
+from status_control_bot.config import BASE_DIR, DATA_DIR, API_BOT_TOKEN
+from status_control_bot.ui_text import ui_data as UI_TEXT
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, ReplyKeyboardMarkup, CallbackQuery
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes, \
     CallbackQueryHandler, ConversationHandler

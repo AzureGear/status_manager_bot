@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "pgups_telegram_bot"
+name = "status_control_bot"
 version = "0.1"
-description = "Telegram bot for managing diploma design PGUPS"
+description = "Telegram bot for managing activity"
 authors=["AzureGear <celestial.azura@gmail.com>"]
 readme = "README.md"
-packages = [{include = "pgups_telegram_bot", from = "src"}]
+packages = [{include = "status_control_bot", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
