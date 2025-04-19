@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pgups_telegram_bot"
+version = "0.1"
+description = "Telegram bot for managing diploma design PGUPS"
+authors=["AzureGear <celestial.azura@gmail.com>"]
+readme = "README.md"
+packages = [{include = "pgups_telegram_bot", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-telegram-bot = ">=22.0,<23.0"  # запятые не нужны, это не список Python
+transliterate = ">=1.10.2,<2.0.0"
+ujson = ">=5.10.0,<6.0.0"
+python-dotenv = "^1.1.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
