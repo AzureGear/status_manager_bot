@@ -7,7 +7,7 @@ from typing import Optional
 from pathlib import Path
 from functools import wraps
 from collections import defaultdict
-from config import DATA_DIR
+from src.status_control_bot.config import DATA_DIR
 
 
 def write_info(file_path: str, text: str, mode: str = 'w', encoding='utf-8') -> bool:

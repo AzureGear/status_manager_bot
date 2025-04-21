@@ -3,8 +3,8 @@ import json
 import logging
 import transliterate
 from pathlib import Path
-from config import BASE_DIR, DIFF_SYMBOLS
-from utils import convert_to_latin, load_json, save_json
+from src.status_control_bot.config import BASE_DIR, DIFF_SYMBOLS
+from src.status_control_bot.utils import convert_to_latin, load_json, save_json
 
 
 """

@@ -13,13 +13,13 @@ Automated tracking and management of groups activities (students, employees, etc
 2. **Initialize Sample Data**  
    Generate demo user accounts:  
    ```bash
-   python utils.py
+   python src/status_control_bot/utils.py
    ```
 
 3. **Launch Application**  
    Start the bot service:  
    ```bash
-   python az_bot.py
+   python main.py
    ```
 
 ## Description 

@@ -2,11 +2,11 @@ import logging
 from pathlib import Path
 from datetime import datetime
 from warnings import filterwarnings
-from status_control_bot.az_teacher_data_handler import TeacherDataHandler
-from status_control_bot.utils import get_important_info, write_info
-from status_control_bot.rate_limiter import RateLimiter
-from status_control_bot.config import BASE_DIR, DATA_DIR, API_BOT_TOKEN
-from status_control_bot.ui_text import ui_data as UI_TEXT
+from src.status_control_bot.az_teacher_data_handler import TeacherDataHandler
+from src.status_control_bot.utils import get_important_info, write_info
+from src.status_control_bot.rate_limiter import RateLimiter
+from src.status_control_bot.config import BASE_DIR, DATA_DIR, API_BOT_TOKEN
+from src.status_control_bot.ui_text import ui_data as UI_TEXT
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, ReplyKeyboardMarkup, CallbackQuery
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes, \
     CallbackQueryHandler, ConversationHandler
@@ -42,11 +42,8 @@ from telegram.warnings import PTBUserWarning
         1.2 /message Ввод важного сообщения, которое будет показываться всем при начале работы (из главного меню)
 """
 
-
-# TODO: исправить хранение и использование токена
 # TODO: добавить высчитывание статуса группы
 # TODO: добавить фукнцию просмотра работы студента и записи работы студента.
-# TODO: добавить обработчик ошибок
 # TODO: поправить лог перед выпуском
 
 
@@ -120,6 +117,16 @@ tcr_handler = TeacherDataHandler(Path.joinpath(BASE_DIR, "data/students/teachers
 
 
 # region Обработчики
+async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Все необработанные исключения."""
+    logger.error("Необработанная ошибка:", exc_info=context.error)
+    
+    # Отправка сообщения пользователю
+    if update and update.effective_message:
+        text = "Произошла ошибка. Попробуйте перезапустить чат /stop -> /start."
+        await update.effective_message.reply_text(text)
+
+
 async def imp_msg_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Ввод важного сообщения"""
     await update.message.reply_text("Введите общую важную ❗ информацию для всех:")
@@ -558,10 +565,11 @@ async def select_teacher(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
 # ----------------------------------------------------------------------------------------------------------------------
 # region Main()
-def main():
-    # Создаем приложение
-    application = Application.builder().token(API_BOT_TOKEN).build()
-
+def create_bot_app() -> Application:
+    """Создание приложения бота"""
+    app = Application.builder().token(API_BOT_TOKEN).build()
+    
+    # Регистрация обработчиков
     # Регистрация
     registration_conv = ConversationHandler(
         entry_points=[CallbackQueryHandler(reg_in, pattern=f"^{str(REGISTRATION)}$")],
@@ -665,11 +673,24 @@ def main():
         ],
     )
     
-    application.add_handler(conv_handler)
+    app.add_handler(conv_handler)
 
-    # Запуск приложения, до Ctrl-C
+    # Добавляем глобальный обработчик ошибок для контроля всех необработанных исключений
+    app.add_error_handler(error_handler)
+    
+    # Обработчик ошибок
+    app.add_error_handler(error_handler)
+    
+    return app
+
+def run_bot():
+    """Запуск бота"""
+    app = create_bot_app()
     print("Запуск бота")
-    application.run_polling(allowed_updates=Update.ALL_TYPES)
+    app.run_polling(allowed_updates=Update.ALL_TYPES)
+
+def main():
+    run_bot()
 # endregion
 
 

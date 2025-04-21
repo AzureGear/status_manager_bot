@@ -13,13 +13,13 @@
 2. **Инициализация тестовых данных**  
    Сгенерируйте демо:  
    ```bash
-   python utils.py
+   python src/status_control_bot/utils.py
    ```  
 
 3. **Запуск приложения**  
    Запустите сервис бота:  
    ```bash
-   python az_bot.py
+   python main.py
    ```  
 
 ## Описание  
